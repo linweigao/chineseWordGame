@@ -13,16 +13,17 @@ public class ConversionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        List<string> dialog = new List<string>();
-
-        for (int i = 0; i < 10; i++)
+        DialogMessage dialog = new DialogMessage()
         {
-            dialog.Add("Hello world " + i.ToString());
-        }
+            Id = "Tree1",
+            Msg = new Message
+            {
+                 Content = "你醒了，脑后好疼。为什么那么黑呢？应该是夜里，怎么没有月光呢？",
+                 Type = MessageType.SystemMessage
+            }
+        };
 
-        dialog.Add("Hello world ! Hello world ! Hello world ! Hello world ! Hello world ! Hello world !");
-
-        this.LoadDialog(dialog);
+        LoadDialog(dialog);
     }
 
     // Update is called once per frame
@@ -31,10 +32,16 @@ public class ConversionController : MonoBehaviour
         
     }
 
-    private void LoadDialog(List<string> dialog)
+    private void LoadDialog(DialogMessage dialog)
     {
-        var rectTransform = content.GetComponent<RectTransform>();
+        var messageGo = Instantiate(messagePrefab, content.transform);
+        var textGo = messageGo.GetComponentInChildren<TMP_Text>();
+        textGo.text = "";
+        StartCoroutine(TypewriterEffect(textGo, dialog.Msg.Content));
+    }
 
+    private void LoadHistory(List<string> dialog)
+    {
         foreach (var message in dialog)
         {
             var messageObj = Instantiate(messagePrefab, content.transform);
@@ -42,8 +49,14 @@ public class ConversionController : MonoBehaviour
             text.text = message;
             messageObj.GetComponent<RectTransform>().sizeDelta = new Vector2(text.preferredWidth, text.preferredHeight);
         }
+    }
 
-        //var layoutGroup = content.GetComponent<LayoutGroup>();
-        //LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup.GetComponent<RectTransform>());
+    private IEnumerator TypewriterEffect(TMP_Text textObj, string text)
+    {
+        foreach (var character in text.ToCharArray())
+        {
+            textObj.text += character;
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 }
