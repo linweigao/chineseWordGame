@@ -9,4 +9,5 @@ public class Quest
 
     public List<Response> Responses { get; set; }
 
+    public List<Hint> Hints { get; set; }
 }

@@ -34,8 +34,7 @@ public class InputController : MonoBehaviour
             return;
         }
 
-        Debug.Log("submit" + data);
         input.text = string.Empty;
-        this.gameController.HandleInput(data.Trim());
+        this.gameController.Reponse(data.Trim());
     }
 }

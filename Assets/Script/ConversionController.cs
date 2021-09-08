@@ -10,6 +10,8 @@ public class ConversionController : MonoBehaviour
     public GameObject content;
     public GameObject messagePrefab;
 
+    private bool isTyping;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,16 +24,22 @@ public class ConversionController : MonoBehaviour
         
     }
 
-    public void AddMessage(Message message)
+    public void AddMessage(Message message, bool type = false)
     {
         var messageGo = Instantiate(messagePrefab, content.transform);
         var textGo = messageGo.GetComponentInChildren<TMP_Text>();
-        textGo.text = "";
-
-        Debug.LogFormat("PreferredWidth & Height: {0}, {1}", textGo.preferredWidth, textGo.preferredHeight);
-
-        messageGo.GetComponent<RectTransform>().sizeDelta = new Vector2(textGo.preferredWidth, textGo.preferredHeight);
-        StartCoroutine(TypewriterEffect(textGo, messageGo, message.Content));
+        if (type)
+        {
+            textGo.text = "";
+            messageGo.GetComponent<RectTransform>().sizeDelta = new Vector2(messageGo.GetComponent<RectTransform>().sizeDelta.x, textGo.preferredHeight);
+            StartCoroutine(TypewriterEffect(textGo, messageGo, message.Content));
+        }
+        else
+        {
+            textGo.text = message.Content;
+            messageGo.GetComponent<RectTransform>().sizeDelta = new Vector2(messageGo.GetComponent<RectTransform>().sizeDelta.x, textGo.preferredHeight);
+        }
+        
     }
 
     public void LoadHistory(List<Message> messages)
@@ -47,15 +55,18 @@ public class ConversionController : MonoBehaviour
 
     private IEnumerator TypewriterEffect(TMP_Text textGo, GameObject parent, string text)
     {
+        isTyping = true;
         foreach (var character in text.ToCharArray())
         {
             textGo.text += character;
             yield return new WaitForSeconds(0.05f);
         }
 
-        // TODO:
+        // TODO: Layout has issues.
         Debug.Log(textGo.textBounds.size.ToString());
         Debug.LogFormat("PreferredWidth & Height: {0}, {1}", textGo.preferredWidth, textGo.preferredHeight);
         parent.GetComponent<RectTransform>().sizeDelta = new Vector2(parent.GetComponent<RectTransform>().sizeDelta.x, textGo.textBounds.size.y);
+
+        isTyping = false;
     }
 }
