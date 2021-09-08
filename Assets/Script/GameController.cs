@@ -32,11 +32,11 @@ public class GameController : MonoBehaviour
         }
 
         // TODO: Load history
-        
-        this.conversionController.AddMessage(currentQuest.Msg, false);
+
+        StartCoroutine(this.conversionController.TypeMessage(currentQuest.Msg));
 
         // TODO: Guide
-        this.Hint();
+        StartCoroutine(this.Hint());
     }
 
     // Update is called once per frame
@@ -45,15 +45,21 @@ public class GameController : MonoBehaviour
 
     }
 
-    public void Hint()
+    public void HandleInput(string input)
     {
-        var message = new Message
+        if (input == "?")
         {
-            Content = "?",
-            Type = MessageType.SelfMessage
-        };
+            StartCoroutine(this.Hint());
+        }
+        else
+        {
+            StartCoroutine(this.Reponse(input));
+        }
+    }
 
-        this.conversionController.AddMessage(message);
+    private IEnumerator Hint()
+    {
+        yield return this.conversionController.TypeMessage(new Message { Content = "?", Type = MessageType.SelfMessage });
 
         if (currentQuest.Hints != null && currentQuest.Hints.Count > 0)
         {
@@ -61,28 +67,27 @@ public class GameController : MonoBehaviour
             {
                 if (hint.Type == HintType.Message)
                 {
-                    this.conversionController.AddMessage(new Message { Content = hint.Message, Type = MessageType.SystemMessage });
+                    yield return this.conversionController.TypeMessage(new Message { Content = hint.Message, Type = MessageType.SystemMessage });
                 }
                 else if (hint.Type == HintType.Response)
                 {
-                    this.Reponse(hint.Message);
+                    yield return this.Reponse(hint.Message);
                 }
             }
         }
         else
         {
-            this.conversionController.AddMessage(new Message { Content = "这里帮不了你，童鞋靠你自己了!", Type = MessageType.SystemMessage });
+            yield return this.conversionController.TypeMessage(new Message { Content = "这里帮不了你，童鞋靠你自己了!", Type = MessageType.SystemMessage });
         }
     }
 
-    public void Reponse(string input)
+    private IEnumerator Reponse(string input)
     {
-        var message = new Message
+        if (questDict.CheckQuest(this.currentQuest, input))
         {
-            Content = input,
-            Type = MessageType.SelfMessage
-        };
+            return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage }, 0.5f);
+        }
 
-        this.conversionController.AddMessage(message);
+        return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
     }
 }

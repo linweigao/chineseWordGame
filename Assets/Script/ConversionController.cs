@@ -24,49 +24,57 @@ public class ConversionController : MonoBehaviour
         
     }
 
-    public void AddMessage(Message message, bool type = false)
+    public IEnumerator AddMessage(Message message)
     {
+        if (this.isTyping)
+        {
+            yield return new WaitWhile(() => this.isTyping);
+        }
+
         var messageGo = Instantiate(messagePrefab, content.transform);
         var textGo = messageGo.GetComponentInChildren<TMP_Text>();
-        if (type)
-        {
-            textGo.text = "";
-            messageGo.GetComponent<RectTransform>().sizeDelta = new Vector2(messageGo.GetComponent<RectTransform>().sizeDelta.x, textGo.preferredHeight);
-            StartCoroutine(TypewriterEffect(textGo, messageGo, message.Content));
-        }
-        else
-        {
-            textGo.text = message.Content;
-            messageGo.GetComponent<RectTransform>().sizeDelta = new Vector2(messageGo.GetComponent<RectTransform>().sizeDelta.x, textGo.preferredHeight);
-        }
-        
+        textGo.text = message.Content;
+        messageGo.GetComponent<RectTransform>().sizeDelta = new Vector2(messageGo.GetComponent<RectTransform>().sizeDelta.x, textGo.preferredHeight);
+        yield return new WaitForEndOfFrame();
     }
 
-    public void LoadHistory(List<Message> messages)
+    public IEnumerator TypeMessage(Message message, float typeSpeed =0.05f)
+    {
+        if (this.isTyping)
+        {
+            yield return new WaitWhile(() => this.isTyping);
+        }
+
+        isTyping = true;
+        var messageGo = Instantiate(messagePrefab, content.transform);
+        var textGo = messageGo.GetComponentInChildren<TMP_Text>();
+        textGo.text = "";
+        messageGo.GetComponent<RectTransform>().sizeDelta = new Vector2(messageGo.GetComponent<RectTransform>().sizeDelta.x, textGo.preferredHeight);
+        yield return TypewriterEffect(textGo, messageGo, message.Content, typeSpeed);
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        isTyping = false;
+    }
+
+    public IEnumerator AddMessages(List<Message> messages)
     {
         foreach (var message in messages)
         {
-            var messageObj = Instantiate(messagePrefab, content.transform);
-            var text = messageObj.GetComponentInChildren<TMP_Text>();
-            text.text = message.Content;
-            messageObj.GetComponent<RectTransform>().sizeDelta = new Vector2(text.preferredWidth, text.preferredHeight);
+            yield return AddMessage(message);
         }
     }
 
-    private IEnumerator TypewriterEffect(TMP_Text textGo, GameObject parent, string text)
+    private IEnumerator TypewriterEffect(TMP_Text textGo, GameObject parent, string text, float typeSpeed = 0.05f)
     {
-        isTyping = true;
         foreach (var character in text.ToCharArray())
         {
             textGo.text += character;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(typeSpeed);
         }
 
         // TODO: Layout has issues.
         Debug.Log(textGo.textBounds.size.ToString());
         Debug.LogFormat("PreferredWidth & Height: {0}, {1}", textGo.preferredWidth, textGo.preferredHeight);
         parent.GetComponent<RectTransform>().sizeDelta = new Vector2(parent.GetComponent<RectTransform>().sizeDelta.x, textGo.textBounds.size.y);
-
-        isTyping = false;
     }
 }

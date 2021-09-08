@@ -18,7 +18,7 @@ public class QuestDict: Dictionary<string, Quest>
             Id = "Tree1",
             Msg = new Message
             {
-                Content = "你醒了，脑后好疼。为什么那么黑呢？应该是夜里，怎么没有月光呢？",
+                Content = "你醒了，脑后好疼。为什么那么黑呢？应该是夜里，怎么没有月光呢？是不是忘记了什么？",
                 Type = MessageType.SystemMessage
             },
             Hints = new List<Hint>
