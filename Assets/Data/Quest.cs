@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class DialogMessage
+public class Quest
 {
     public string Id { get; set; }
 

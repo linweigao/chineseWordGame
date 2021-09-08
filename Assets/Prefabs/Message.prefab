@@ -65,10 +65,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u6D4B"
+  m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cd0c1934d2f32441787b498f8c04cc00, type: 2}
-  m_sharedMaterial: {fileID: 1602461727284118399, guid: cd0c1934d2f32441787b498f8c04cc00, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a661abe048cb04ef19336b8120e427e7, type: 2}
+  m_sharedMaterial: {fileID: 3355424706838660620, guid: a661abe048cb04ef19336b8120e427e7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
