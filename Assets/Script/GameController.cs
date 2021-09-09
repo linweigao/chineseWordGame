@@ -25,18 +25,19 @@ public class GameController : MonoBehaviour
         // TODO: Load Player state;
         player = PlayerState.Instance;
 
-        currentQuest = questDict[QuestDict.DefaultQuest];
+        // Load last/current quest
+        var quest = questDict[QuestDict.DefaultQuest];
         if (!string.IsNullOrEmpty(player.CurrentQuestId))
         {
-            currentQuest = questDict[player.CurrentQuestId];
+            quest = questDict[player.CurrentQuestId];
         }
 
         // TODO: Load history
 
-        StartCoroutine(this.conversionController.TypeMessage(currentQuest.Msg));
+        StartCoroutine(PlayQuest(quest));
 
         // TODO: Guide
-        StartCoroutine(this.Hint());
+        StartCoroutine(Hint());
     }
 
     // Update is called once per frame
@@ -55,6 +56,14 @@ public class GameController : MonoBehaviour
         {
             StartCoroutine(this.Reponse(input));
         }
+    }
+
+    private IEnumerator PlayQuest(Quest quest)
+    {
+        this.currentQuest = quest;
+        this.player.CurrentQuestId = quest.Id;
+
+        yield return this.conversionController.TypeMessage(currentQuest.Msg);
     }
 
     private IEnumerator Hint()
@@ -85,9 +94,18 @@ public class GameController : MonoBehaviour
     {
         if (questDict.CheckQuest(this.currentQuest, input))
         {
-            return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage }, 0.5f);
-        }
+            yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage }, 0.5f);
 
-        return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
+            var nextQuest = questDict[this.currentQuest.Next];
+
+            yield return PlayQuest(nextQuest);
+
+        }
+        else
+        {
+            yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
+
+            yield return this.conversionController.TypeMessage(new Message { Content = "好像你的话没起什么作用!", Type = MessageType.SystemMessage });
+        }
     }
 }

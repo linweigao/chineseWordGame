@@ -40,6 +40,7 @@ public class ConversionController : MonoBehaviour
 
     public IEnumerator TypeMessage(Message message, float typeSpeed =0.05f)
     {
+        Debug.Log("TypeMessage: "+ message.Content);
         if (this.isTyping)
         {
             yield return new WaitWhile(() => this.isTyping);
@@ -73,8 +74,8 @@ public class ConversionController : MonoBehaviour
         }
 
         // TODO: Layout has issues.
-        Debug.Log(textGo.textBounds.size.ToString());
-        Debug.LogFormat("PreferredWidth & Height: {0}, {1}", textGo.preferredWidth, textGo.preferredHeight);
+        // Debug.Log(textGo.textBounds.size.ToString());
+        // Debug.LogFormat("PreferredWidth & Height: {0}, {1}", textGo.preferredWidth, textGo.preferredHeight);
         parent.GetComponent<RectTransform>().sizeDelta = new Vector2(parent.GetComponent<RectTransform>().sizeDelta.x, textGo.textBounds.size.y);
     }
 }

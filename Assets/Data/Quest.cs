@@ -7,7 +7,9 @@ public class Quest
 
     public Message Msg { get; set; }
 
-    public List<Response> Responses { get; set; }
+    public List<string> Answers { get; set; }
 
     public List<Hint> Hints { get; set; }
+
+    public string Next { get; set; }
 }

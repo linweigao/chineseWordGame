@@ -25,7 +25,18 @@ public class QuestDict: Dictionary<string, Quest>
             {
                 new Hint { Type = HintType.Message, Message = "你好像记起来诗词是这个世界的核心力量。所以你大声的说:"},
                 new Hint { Type = HintType.Response, Message ="床前明月光" }
-            }
+            },
+            Answers= new List<string> { "明月"},
+            Next = "Tree2"
+        };
+
+        this.Add(quest);
+
+        quest = new Quest()
+        {
+            Id = "Tree2",
+            Msg = new Message { Content = "终于你想起了这个世界的力量。也想起来你的名字：" },
+
         };
 
         this.Add(quest);
