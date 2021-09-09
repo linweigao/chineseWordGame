@@ -11,17 +11,23 @@ public class ConversionController : MonoBehaviour
     public GameObject messagePrefab;
 
     private bool isTyping;
+    private PlayerState player;
+
+    void Awake()
+    {
+        player = PlayerState.Instance;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public IEnumerator AddMessage(Message message)
@@ -38,9 +44,10 @@ public class ConversionController : MonoBehaviour
         yield return new WaitForEndOfFrame();
     }
 
-    public IEnumerator TypeMessage(Message message, float typeSpeed =0.05f)
+    public IEnumerator TypeMessage(Message message, float typeSpeed = 0.05f)
     {
-        Debug.Log("TypeMessage: "+ message.Content);
+        string msg = message.Content.Replace("##name##", this.player.Name);
+        Debug.Log("TypeMessage: " + msg);
         if (this.isTyping)
         {
             yield return new WaitWhile(() => this.isTyping);
@@ -51,7 +58,7 @@ public class ConversionController : MonoBehaviour
         var textGo = messageGo.GetComponentInChildren<TMP_Text>();
         textGo.text = "";
         messageGo.GetComponent<RectTransform>().sizeDelta = new Vector2(messageGo.GetComponent<RectTransform>().sizeDelta.x, textGo.preferredHeight);
-        yield return TypewriterEffect(textGo, messageGo, message.Content, typeSpeed);
+        yield return TypewriterEffect(textGo, messageGo, msg, typeSpeed);
 
         yield return new WaitForSecondsRealtime(0.5f);
         isTyping = false;

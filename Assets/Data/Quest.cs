@@ -11,5 +11,7 @@ public class Quest
 
     public List<Hint> Hints { get; set; }
 
-    public string Next { get; set; }
+    public string NextQuest { get; set; }
+
+    public string NextMessage { get; set; }
 }

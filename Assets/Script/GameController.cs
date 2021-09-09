@@ -35,9 +35,6 @@ public class GameController : MonoBehaviour
         // TODO: Load history
 
         StartCoroutine(PlayQuest(quest));
-
-        // TODO: Guide
-        StartCoroutine(Hint());
     }
 
     // Update is called once per frame
@@ -54,6 +51,11 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            if (currentQuest.Id == "Tree2")
+            {
+                this.player.Name = input;
+            }
+
             StartCoroutine(this.Reponse(input));
         }
     }
@@ -96,15 +98,18 @@ public class GameController : MonoBehaviour
         {
             yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage }, 0.5f);
 
-            var nextQuest = questDict[this.currentQuest.Next];
+            if (!string.IsNullOrEmpty(this.currentQuest.NextMessage))
+            {
+                yield return this.conversionController.TypeMessage(new Message { Content = this.currentQuest.NextMessage });
+            }
 
+            var nextQuest = questDict[this.currentQuest.NextQuest];
             yield return PlayQuest(nextQuest);
 
         }
         else
         {
             yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
-
             yield return this.conversionController.TypeMessage(new Message { Content = "好像你的话没起什么作用!", Type = MessageType.SystemMessage });
         }
     }
