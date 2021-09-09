@@ -40,7 +40,6 @@ public class ConversionController : MonoBehaviour
         var messageGo = Instantiate(messagePrefab, content.transform);
         var textGo = messageGo.GetComponentInChildren<TMP_Text>();
         textGo.text = message.Content;
-        messageGo.GetComponent<RectTransform>().sizeDelta = new Vector2(messageGo.GetComponent<RectTransform>().sizeDelta.x, textGo.preferredHeight);
         yield return new WaitForEndOfFrame();
     }
 
@@ -57,7 +56,6 @@ public class ConversionController : MonoBehaviour
         var messageGo = Instantiate(messagePrefab, content.transform);
         var textGo = messageGo.GetComponentInChildren<TMP_Text>();
         textGo.text = "";
-        messageGo.GetComponent<RectTransform>().sizeDelta = new Vector2(messageGo.GetComponent<RectTransform>().sizeDelta.x, textGo.preferredHeight);
         yield return TypewriterEffect(textGo, messageGo, msg, typeSpeed);
 
         yield return new WaitForSecondsRealtime(0.5f);
@@ -79,10 +77,5 @@ public class ConversionController : MonoBehaviour
             textGo.text += character;
             yield return new WaitForSeconds(typeSpeed);
         }
-
-        // TODO: Layout has issues.
-        // Debug.Log(textGo.textBounds.size.ToString());
-        // Debug.LogFormat("PreferredWidth & Height: {0}, {1}", textGo.preferredWidth, textGo.preferredHeight);
-        parent.GetComponent<RectTransform>().sizeDelta = new Vector2(parent.GetComponent<RectTransform>().sizeDelta.x, textGo.textBounds.size.y);
     }
 }
