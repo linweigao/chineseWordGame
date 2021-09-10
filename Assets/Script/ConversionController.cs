@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Text.RegularExpressions;
 
 public class ConversionController : MonoBehaviour
 {
@@ -50,20 +50,24 @@ public class ConversionController : MonoBehaviour
 
     public IEnumerator TypeMessage(Message message, float typeSpeed = 0.05f)
     {
-        string msg = message.Content.Replace("##name##", this.player.Name);
-        Debug.Log("TypeMessage: " + msg);
         if (this.isTyping)
         {
             yield return new WaitWhile(() => this.isTyping);
         }
 
         isTyping = true;
-        var messageController = CreateMessage(message);
-        var textGo = messageController.textGo;
-        textGo.text = "";
-        yield return TypewriterEffect(textGo, msg, typeSpeed);
+        var replacedMsg = message.Content.Replace("##name##", this.player.Name);
+        foreach (var msg in replacedMsg.Split('\n'))
+        {
+            var splitMsg = new Message { Content = msg, From = message.From, Type = message.Type };
+            var messageController = CreateMessage(splitMsg);
+            var textGo = messageController.textGo;
+            textGo.text = "";
+            yield return TypewriterEffect(textGo, msg, typeSpeed);
 
-        this.ScrollToBottom();
+            this.ScrollToBottom();
+        }
+
 
         yield return new WaitForSecondsRealtime(0.5f);
         isTyping = false;
@@ -79,9 +83,56 @@ public class ConversionController : MonoBehaviour
 
     private IEnumerator TypewriterEffect(TMP_Text textGo, string text, float typeSpeed = 0.05f)
     {
+        bool styleStart = false;
+        bool styleApply = false;
+        string cachedStyle = "";
+        string cachedStyleEnd = "";
+
+
         foreach (var character in text.ToCharArray())
         {
-            textGo.text += character;
+            if (character == '<')
+            {
+                styleStart = true;
+            }
+            else if (character == '>')
+            {
+                cachedStyle += character;
+                styleStart = false;
+
+                if (cachedStyle.Contains("/"))
+                {
+                    styleApply = false;
+                    cachedStyle = "";
+                    cachedStyleEnd = "";
+                }
+                else
+                {
+                    styleApply = true;
+                    cachedStyleEnd = cachedStyle.Replace("<", "</");
+                    if (cachedStyleEnd.Contains("="))
+                    {
+                        cachedStyleEnd = cachedStyleEnd.Substring(0, cachedStyleEnd.IndexOf("=")) + ">";
+                    }
+                }
+                continue;
+            }
+
+            if (styleStart)
+            {
+                cachedStyle += character;
+                continue;
+            }
+
+            if (styleApply)
+            {
+                textGo.text += cachedStyle + character + cachedStyleEnd;
+            }
+            else
+            {
+                textGo.text += character;
+            }
+
             yield return new WaitForSeconds(typeSpeed);
         }
     }

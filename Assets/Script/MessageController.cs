@@ -40,7 +40,7 @@ public class MessageController : MonoBehaviour
         }
         else if (message.Type == MessageType.SelfMessage)
         {
-            imageRect.SetRight(imageRect.sizeDelta.x);
+            
             textExpectWidth = width - imageRect.sizeDelta.x - marginImage;
         }
 

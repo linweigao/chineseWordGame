@@ -18,7 +18,7 @@ public class QuestDict: Dictionary<string, Quest>
             Id = "Tree1",
             Msg = new Message
             {
-                Content = "你醒了，脑后好疼。为什么那么黑呢？应该是夜里，怎么没有月光呢？是不是忘记了什么？是不是不知道怎么办？打个？看看吧。",
+                Content = "你醒了，脑后好疼。为什么那么黑呢？应该是夜里，怎么没有<color=yellow>月光</color>呢？\n是不是忘记了什么？是不是不知道怎么办？打个？看看吧。",
                 Type = MessageType.SystemMessage
             },
             Hints = new List<Hint>
@@ -26,7 +26,8 @@ public class QuestDict: Dictionary<string, Quest>
                 new Hint { Type = HintType.Message, Message = "你好像记起来诗词是这个世界的核心力量。所以你大声的说:"},
                 new Hint { Type = HintType.Response, Message ="床前明月光" }
             },
-            Answers= new List<string> { "明月"},
+            Answers= new List<string> { "月"},
+            NextMessage = "月亮照亮了你的世界。",
             NextQuest = "Tree2"
         };
 
