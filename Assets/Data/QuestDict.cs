@@ -18,7 +18,7 @@ public class QuestDict: Dictionary<string, Quest>
             Id = "Tree1",
             Msg = new Message
             {
-                Content = "你醒了，脑后好疼。为什么那么黑呢？应该是夜里，怎么没有月光呢？是不是忘记了什么？\n 是不是不知道怎么办？打个？看看吧。",
+                Content = "你醒了，脑后好疼。为什么那么黑呢？应该是夜里，怎么没有月光呢？是不是忘记了什么？是不是不知道怎么办？打个？看看吧。",
                 Type = MessageType.SystemMessage
             },
             Hints = new List<Hint>
@@ -36,7 +36,6 @@ public class QuestDict: Dictionary<string, Quest>
         {
             Id = "Tree2",
             Msg = new Message { Content = "终于你想起了这个世界的力量。也想起来你的名字：" },
-            NextMessage = "你好，文友 ##name##。",
             NextQuest ="Tree3"
         };
 
@@ -45,7 +44,7 @@ public class QuestDict: Dictionary<string, Quest>
         quest = new Quest()
         {
             Id = "Tree3",
-            Msg = new Message { Content = "看来终于清醒了。下面看下周围的环境吧。打个~看看吧。" },
+            Msg = new Message { Content = "文友[##name##],看来终于清醒了。下面看下周围的环境吧。打个~看看吧。" },
         };
 
         this.Add(quest);

@@ -10,21 +10,24 @@ public class ConversionController : MonoBehaviour
     public GameObject scrollView;
     public GameObject content;
     public GameObject messagePrefab;
-    public GameObject selfMessagePrefab;
 
     private bool isTyping;
     private PlayerState player;
     private ScrollRect scrollRect;
+    private RectTransform contentRect;
 
     void Awake()
     {
         player = PlayerState.Instance;
+
+        this.scrollRect = this.scrollView.GetComponent<ScrollRect>();
+        this.contentRect = this.content.GetComponent<RectTransform>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        this.scrollRect = this.scrollView.GetComponent<ScrollRect>();
+
     }
 
     // Update is called once per frame
@@ -41,8 +44,7 @@ public class ConversionController : MonoBehaviour
         }
 
         var messageGo = CreateMessage(message);
-        var textGo = messageGo.GetComponentInChildren<TMP_Text>();
-        textGo.text = message.Content;
+        messageGo.textGo.text = message.Content;
         yield return new WaitForEndOfFrame();
     }
 
@@ -56,10 +58,10 @@ public class ConversionController : MonoBehaviour
         }
 
         isTyping = true;
-        var messageGo = CreateMessage(message);
-        var textGo = messageGo.GetComponentInChildren<TMP_Text>();
+        var messageController = CreateMessage(message);
+        var textGo = messageController.textGo;
         textGo.text = "";
-        yield return TypewriterEffect(textGo, messageGo, msg, typeSpeed);
+        yield return TypewriterEffect(textGo, msg, typeSpeed);
 
         this.ScrollToBottom();
 
@@ -75,7 +77,7 @@ public class ConversionController : MonoBehaviour
         }
     }
 
-    private IEnumerator TypewriterEffect(TMP_Text textGo, GameObject parent, string text, float typeSpeed = 0.05f)
+    private IEnumerator TypewriterEffect(TMP_Text textGo, string text, float typeSpeed = 0.05f)
     {
         foreach (var character in text.ToCharArray())
         {
@@ -89,17 +91,14 @@ public class ConversionController : MonoBehaviour
         this.scrollRect.normalizedPosition = new Vector2(0, 0);
     }
 
-    private GameObject CreateMessage(Message message)
+    private MessageController CreateMessage(Message message)
     {
-        if (message.Type == MessageType.SelfMessage)
-        {
-            return Instantiate(selfMessagePrefab, content.transform);
-        }
-        else if (message.Type == MessageType.SystemMessage)
-        {
-            return Instantiate(messagePrefab, content.transform);
-        }
+        var childCount = content.transform.childCount;
+        var messageGo = Instantiate(messagePrefab, content.transform);
+        var messageController = messageGo.GetComponent<MessageController>();
+        messageController.Layout(message, contentRect.rect.width);
+        messageGo.transform.SetSiblingIndex(childCount - 1);
 
-        return null;
+        return messageController;
     }
 }

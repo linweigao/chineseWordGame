@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public Font font;
+
     private ConversionController conversionController;
     private PlayerState player;
     private QuestDict questDict;
@@ -18,12 +20,13 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         // TODO: Load quest;
         questDict = QuestDict.Instance;
 
         // TODO: Load Player state;
         player = PlayerState.Instance;
+
+        // TODO: Load history
 
         // Load last/current quest
         var quest = questDict[QuestDict.DefaultQuest];
@@ -31,9 +34,9 @@ public class GameController : MonoBehaviour
         {
             quest = questDict[player.CurrentQuestId];
         }
+        this.currentQuest = quest;
 
-        // TODO: Load history
-
+        Canvas.ForceUpdateCanvases();
         StartCoroutine(PlayQuest(quest));
     }
 
