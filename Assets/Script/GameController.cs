@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour
 
     public void HandleInput(string input)
     {
-        if (input == "?")
+        if (input == "?" || input == "？")
         {
             StartCoroutine(this.Hint());
         }

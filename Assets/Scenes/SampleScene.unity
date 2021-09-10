@@ -639,8 +639,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0037774735dc4a31b4b4ccae7b249b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollView: {fileID: 1872868384}
   content: {fileID: 1316850221}
   messagePrefab: {fileID: 5373035913988638035, guid: dd8d3b37618ff403db2129880b2214ef, type: 3}
+  selfMessagePrefab: {fileID: 2371081725743290976, guid: 1fba78ed11644477da0f8031345c031d, type: 3}
 --- !u!1 &726258267
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,7 +1250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 5
     m_Right: 0
     m_Top: 0
     m_Bottom: 5
@@ -1971,8 +1973,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -160}
+  m_AnchoredPosition: {x: 0, y: 60}
+  m_SizeDelta: {x: 0, y: -280}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1872868386
 MonoBehaviour:
