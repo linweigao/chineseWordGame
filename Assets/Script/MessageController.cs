@@ -16,13 +16,13 @@ public class MessageController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Layout(Message message, float width)
@@ -33,25 +33,31 @@ public class MessageController : MonoBehaviour
 
         var textExpectWidth = width;
 
-
         if (message.Type == MessageType.SystemMessage)
         {
             imageGo.gameObject.SetActive(false);
         }
         else if (message.Type == MessageType.SelfMessage)
         {
-            
+            imageRect.localPosition = new Vector3(width - imageRect.sizeDelta.x, imageRect.localPosition.y);
+            textExpectWidth = width - imageRect.sizeDelta.x - marginImage;
+        }
+        else if (message.Type == MessageType.UserMessage)
+        {
             textExpectWidth = width - imageRect.sizeDelta.x - marginImage;
         }
 
         var textSize = PopulateString(message.Content, textExpectWidth, lineHeight);
-        if (textSize.LineCount == 0)
+
+        textRect.sizeDelta = new Vector2(textSize.Width, (textSize.LineCount + 1) * lineHeight);
+        if (message.Type == MessageType.SystemMessage)
         {
-            textRect.sizeDelta = new Vector2(textSize.Width, lineHeight);
+            // Magic number -50
+            textRect.localPosition = new Vector3(textRect.sizeDelta.x / 2f - 50, textRect.localPosition.y);
         }
-        else
+        else if (message.Type == MessageType.SelfMessage)
         {
-            textRect.sizeDelta = new Vector2(textSize.Width, (textSize.LineCount+1) * lineHeight);
+            textRect.localPosition = new Vector3(imageRect.localPosition.x - marginImage - textRect.sizeDelta.x/2f -50, imageRect.localPosition.y);
         }
 
         containerRect.sizeDelta = new Vector2(width, Math.Max(textRect.sizeDelta.y, imageRect.sizeDelta.y)); ;
@@ -68,7 +74,7 @@ public class MessageController : MonoBehaviour
             textWidth = width;
         }
 
-        var retVal = new TextSize { LineCount = lineCount, Width = textWidth };
+        var retVal = new TextSize { LineCount = lineCount, Width = textWidth, Height = textGo.preferredHeight };
         Debug.Log(retVal);
 
         return retVal;
@@ -79,6 +85,8 @@ public class MessageController : MonoBehaviour
         public int LineCount { get; set; }
 
         public float Width { get; set; }
+
+        public float Height { get; set; }
 
         public override string ToString()
         {
