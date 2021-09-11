@@ -57,7 +57,7 @@ public class MessageController : MonoBehaviour
         }
         else if (message.Type == MessageType.SelfMessage)
         {
-            textRect.localPosition = new Vector3(imageRect.localPosition.x - marginImage - textRect.sizeDelta.x/2f -50, imageRect.localPosition.y);
+            textRect.localPosition = new Vector3(imageRect.localPosition.x - marginImage - textRect.sizeDelta.x / 2f - 50, imageRect.localPosition.y);
         }
 
         containerRect.sizeDelta = new Vector2(width, Math.Max(textRect.sizeDelta.y, imageRect.sizeDelta.y)); ;

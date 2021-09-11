@@ -54,7 +54,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            if (currentQuest.Id == "Tree2")
+            if (currentQuest.Key == "Tree2")
             {
                 this.player.Name = input;
             }
@@ -66,7 +66,7 @@ public class GameController : MonoBehaviour
     private IEnumerator PlayQuest(Quest quest)
     {
         this.currentQuest = quest;
-        this.player.CurrentQuestId = quest.Id;
+        this.player.CurrentQuestId = quest.Key;
 
         yield return this.conversionController.TypeMessage(currentQuest.Msg);
     }
@@ -91,7 +91,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            yield return this.conversionController.TypeMessage(new Message { Content = "这里帮不了你，童鞋靠你自己了!", Type = MessageType.SystemMessage });
+            yield return this.conversionController.TypeMessage(new Message { Content = QuestDict.DefaultNoHint, Type = MessageType.SystemMessage });
         }
     }
 
@@ -106,7 +106,8 @@ public class GameController : MonoBehaviour
                 yield return this.conversionController.TypeMessage(new Message { Content = this.currentQuest.NextMessage });
             }
 
-            var nextQuest = questDict[this.currentQuest.NextQuest];
+            var location = this.currentQuest.NextQuestLocation == Location.None ? this.currentQuest.Location : this.currentQuest.NextQuestLocation;
+            var nextQuest = questDict[location.ToString() + this.currentQuest.NextQuestId.ToString()];
             yield return PlayQuest(nextQuest);
 
         }

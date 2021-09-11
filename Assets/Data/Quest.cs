@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 public class Quest
 {
-    public string Id { get; set; }
+    public Location Location { get; set; }
+
+    public int Id { get; set; }
 
     public Message Msg { get; set; }
 
@@ -11,7 +13,11 @@ public class Quest
 
     public List<Hint> Hints { get; set; }
 
-    public string NextQuest { get; set; }
+    public int NextQuestId { get; set; }
+
+    public Location NextQuestLocation { get; set; }
 
     public string NextMessage { get; set; }
+
+    public string Key { get { return Location.ToString() + Id.ToString(); } }
 }
