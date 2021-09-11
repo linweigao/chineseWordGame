@@ -8,10 +8,25 @@ using System;
 public class MessageController : MonoBehaviour
 {
     public Image imageGo;
+    public Image containerGo;
     public TMP_Text textGo;
 
+    // color
+    public Color systemBgColor = Color.black;
+    public Color systemTextColor = Color.white;
+    public Color selfBgColor = Color.green;
+    public Color selfTextColor = Color.black;
+    public Color userBgColor = Color.white;
+    public Color userTextColor = Color.black;
+
+    // margin
+    public float marginLeft = 40f;
+    public float marginRight = 40f;
+    public float marginBottom = 10f;
+
+    public float marginImage = 40f;
+
     public float lineHeight = 90f;
-    public float marginImage = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -27,40 +42,53 @@ public class MessageController : MonoBehaviour
 
     public void Layout(Message message, float width)
     {
+        var actualWidth = width - marginLeft - marginRight;
+
         var containerRect = this.gameObject.GetComponent<RectTransform>();
         var imageRect = imageGo.GetComponent<RectTransform>();
+        var textContainerRect = containerGo.GetComponent<RectTransform>();
         var textRect = textGo.GetComponent<RectTransform>();
 
-        var textExpectWidth = width;
+        var textExpectWidth = actualWidth;
 
         if (message.Type == MessageType.SystemMessage)
         {
+            textGo.color = systemTextColor;
+            containerGo.color = systemBgColor;
             imageGo.gameObject.SetActive(false);
         }
         else if (message.Type == MessageType.SelfMessage)
         {
-            imageRect.localPosition = new Vector3(width - imageRect.sizeDelta.x, imageRect.localPosition.y);
-            textExpectWidth = width - imageRect.sizeDelta.x - marginImage;
+            textGo.color = selfTextColor;
+            containerGo.color = selfBgColor;
+            imageRect.localPosition = new Vector3(width - marginRight - imageRect.sizeDelta.x, imageRect.localPosition.y);
+            textExpectWidth = actualWidth - imageRect.sizeDelta.x - marginImage;
         }
         else if (message.Type == MessageType.UserMessage)
         {
-            textExpectWidth = width - imageRect.sizeDelta.x - marginImage;
+            textGo.color = userTextColor;
+            containerGo.color = userBgColor;
+            textExpectWidth = actualWidth - imageRect.sizeDelta.x - marginImage;
         }
+
+        var textMarginLeft = textRect.offsetMin.x;
+        var textMarginRight = -textRect.offsetMax.x;
+        textExpectWidth -= textMarginLeft + textMarginRight;
 
         var textSize = PopulateString(message.Content, textExpectWidth, lineHeight);
 
-        textRect.sizeDelta = new Vector2(textSize.Width, (textSize.LineCount + 1) * lineHeight);
+        textContainerRect.sizeDelta = new Vector2(textSize.Width + textMarginLeft + textMarginRight, (textSize.LineCount + 1) * lineHeight);
         if (message.Type == MessageType.SystemMessage)
         {
             // Magic number -50
-            textRect.localPosition = new Vector3(textRect.sizeDelta.x / 2f - 50, textRect.localPosition.y);
+            textContainerRect.localPosition = new Vector3(marginLeft + textContainerRect.sizeDelta.x / 2f - 50, textContainerRect.localPosition.y);
         }
         else if (message.Type == MessageType.SelfMessage)
         {
-            textRect.localPosition = new Vector3(imageRect.localPosition.x - marginImage - textRect.sizeDelta.x / 2f - 50, imageRect.localPosition.y);
+            textContainerRect.localPosition = new Vector3(imageRect.localPosition.x - marginImage - textContainerRect.sizeDelta.x / 2f - 50, imageRect.localPosition.y);
         }
 
-        containerRect.sizeDelta = new Vector2(width, Math.Max(textRect.sizeDelta.y, imageRect.sizeDelta.y)); ;
+        containerRect.sizeDelta = new Vector2(width, Math.Max(textContainerRect.sizeDelta.y, imageRect.sizeDelta.y) + marginBottom);
     }
 
     private TextSize PopulateString(string text, float width, float height)
