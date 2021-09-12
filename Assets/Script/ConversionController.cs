@@ -10,8 +10,9 @@ public class ConversionController : MonoBehaviour
     public GameObject scrollView;
     public GameObject content;
     public GameObject messagePrefab;
+    public GameObject mapPrefab;
 
-    private bool isTyping;
+    private bool isWorking;
     private PlayerState player;
     private ScrollRect scrollRect;
     private RectTransform contentRect;
@@ -38,24 +39,40 @@ public class ConversionController : MonoBehaviour
 
     public IEnumerator AddMessage(Message message)
     {
-        if (this.isTyping)
+        if (this.isWorking)
         {
-            yield return new WaitWhile(() => this.isTyping);
+            yield return new WaitWhile(() => this.isWorking);
         }
 
         var messageGo = CreateMessage(message);
         messageGo.textGo.text = message.Content;
+        this.ScrollToBottom();
         yield return new WaitForEndOfFrame();
+    }
+
+    public IEnumerator AddMap(LocationMap map)
+    {
+        if (this.isWorking)
+        {
+            yield return new WaitWhile(() => this.isWorking);
+        }
+
+        this.isWorking = true;
+        this.CreateMap(map);
+        yield return new WaitForEndOfFrame();
+        this.ScrollToBottom();
+
+        this.isWorking = false;
     }
 
     public IEnumerator TypeMessage(Message message, float typeSpeed = 0.05f)
     {
-        if (this.isTyping)
+        if (this.isWorking)
         {
-            yield return new WaitWhile(() => this.isTyping);
+            yield return new WaitWhile(() => this.isWorking);
         }
 
-        isTyping = true;
+        isWorking = true;
         var replacedMsg = message.Content.Replace("##name##", this.player.Name);
         foreach (var msg in replacedMsg.Split('\n'))
         {
@@ -70,15 +87,7 @@ public class ConversionController : MonoBehaviour
 
 
         yield return new WaitForSecondsRealtime(0.5f);
-        isTyping = false;
-    }
-
-    public IEnumerator AddMessages(List<Message> messages)
-    {
-        foreach (var message in messages)
-        {
-            yield return AddMessage(message);
-        }
+        isWorking = false;
     }
 
     private IEnumerator TypewriterEffect(TMP_Text textGo, string text, float typeSpeed = 0.05f)
@@ -151,5 +160,41 @@ public class ConversionController : MonoBehaviour
         messageGo.transform.SetSiblingIndex(childCount - 1);
 
         return messageController;
+    }
+
+    private MapController CreateMap(LocationMap map)
+    {
+        var childCount = content.transform.childCount;
+        var mapGo = Instantiate(mapPrefab, content.transform);
+        var mapController = mapGo.GetComponent<MapController>();
+        mapGo.transform.SetSiblingIndex(childCount - 1);
+
+        if (!string.IsNullOrEmpty(map.MiddleText))
+        {
+            mapController.middleText.text = map.MiddleText;
+            
+        }
+        if (!string.IsNullOrEmpty(map.TopLeftText))
+        {
+            mapController.topLeftText.text = map.TopLeftText;
+
+        }
+        if (!string.IsNullOrEmpty(map.TopRightText))
+        {
+            mapController.topRightText.text = map.TopRightText;
+
+        }
+        if (!string.IsNullOrEmpty(map.BottomLeftText))
+        {
+            mapController.bottomLeftText.text = map.BottomLeftText;
+
+        }
+        if (!string.IsNullOrEmpty(map.BottomRightText))
+        {
+            mapController.bottomRightText.text = map.BottomRightText;
+
+        }
+
+        return mapController;
     }
 }

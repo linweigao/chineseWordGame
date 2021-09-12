@@ -22,7 +22,7 @@ public class MessageController : MonoBehaviour
     // margin
     public float marginLeft = 40f;
     public float marginRight = 40f;
-    public float marginBottom = 10f;
+    public float marginBottom = 40f;
 
     public float marginImage = 40f;
 

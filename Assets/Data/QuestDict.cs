@@ -53,6 +53,15 @@ public class QuestDict: Dictionary<string, Quest>
         };
 
         this.Add(quest);
+
+        quest = new Quest
+        {
+            Location = Location.Tree,
+            Id = 4,
+            Msg = new Message { Content = "那里有一群黑衣人，" }
+        };
+
+        this.Add(quest);
     }
 
     public void Add(Quest quest)

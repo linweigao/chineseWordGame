@@ -346,6 +346,6 @@ MonoBehaviour:
   userTextColor: {r: 0, g: 0, b: 0, a: 1}
   marginLeft: 40
   marginRight: 40
-  marginBottom: 10
+  marginBottom: 40
   marginImage: 40
   lineHeight: 90

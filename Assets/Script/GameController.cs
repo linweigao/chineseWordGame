@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     private ConversionController conversionController;
     private PlayerState player;
     private QuestDict questDict;
+    private MapDict mapDict;
     private Quest currentQuest;
 
     void Awake()
@@ -22,6 +23,8 @@ public class GameController : MonoBehaviour
     {
         // TODO: Load quest;
         questDict = QuestDict.Instance;
+        // TODO: Load map;
+        mapDict = MapDict.Instance;
 
         // TODO: Load Player state;
         player = PlayerState.Instance;
@@ -51,6 +54,10 @@ public class GameController : MonoBehaviour
         if (input == "?" || input == "？")
         {
             StartCoroutine(this.Hint());
+        }
+        else if (input == "#")
+        {
+            StartCoroutine(this.Map());
         }
         else
         {
@@ -93,6 +100,14 @@ public class GameController : MonoBehaviour
         {
             yield return this.conversionController.TypeMessage(new Message { Content = QuestDict.DefaultNoHint, Type = MessageType.SystemMessage });
         }
+    }
+
+    private IEnumerator Map()
+    {
+        yield return this.conversionController.TypeMessage(new Message { Content = "#", Type = MessageType.SelfMessage });
+
+        var map = mapDict[this.currentQuest.Location];
+        yield return this.conversionController.AddMap(map);
     }
 
     private IEnumerator Reponse(string input)
