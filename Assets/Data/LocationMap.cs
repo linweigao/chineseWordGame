@@ -9,11 +9,11 @@ public class LocationMap
     public string TopRightText { get; set; }
     public string BottomLeftText { get; set; }
     public string BottomRightText { get; set; }
-    public int MiddleQuest { get; set; }
-    public int TopLeftQuest { get; set; }
-    public int TopRightQuest { get; set; }
-    public int BottomLeftQuest { get; set; }
-    public int BottomRightQuest { get; set; }
+    public QuestId MiddleQuest { get; set; }
+    public QuestId TopLeftQuest { get; set; }
+    public QuestId TopRightQuest { get; set; }
+    public QuestId BottomLeftQuest { get; set; }
+    public QuestId BottomRightQuest { get; set; }
 }
 
 public class MapDict: Dictionary<Location, LocationMap>
@@ -34,7 +34,7 @@ public class MapDict: Dictionary<Location, LocationMap>
             TopLeftText = "<color=yellow>山山山山\n 山山 山</color>",
             BottomLeftText = "<color=green>林 林 林 林\n 林</color> 我 <color=green>林\n 林 林 林</color>",
             TopRightText = "<color=black>黑衣人</color>",
-            TopRightQuest = 4
+            TopRightQuest = QuestId.BlackMan
         };
 
         this.Add(map.Location, map);

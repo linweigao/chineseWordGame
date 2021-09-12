@@ -176,7 +176,7 @@ public class ConversionController : MonoBehaviour
             mapController.middleText.text = map.MiddleText;
             if (map.MiddleQuest > 0)
             {
-                mapController.MiddleTextOnClick.AddListener(() => this.gameController.PlayQuest(map.Location, map.MiddleQuest));
+                mapController.MiddleTextOnClick.AddListener(() => this.gameController.PlayQuest(map.MiddleQuest));
             }
         }
         if (!string.IsNullOrEmpty(map.TopLeftText))
@@ -184,7 +184,7 @@ public class ConversionController : MonoBehaviour
             mapController.topLeftText.text = map.TopLeftText;
             if (map.TopLeftQuest > 0)
             {
-                mapController.TopLeftTextOnClick.AddListener(() => this.gameController.PlayQuest(map.Location, map.TopLeftQuest));
+                mapController.TopLeftTextOnClick.AddListener(() => this.gameController.PlayQuest(map.TopLeftQuest));
             }
         }
         if (!string.IsNullOrEmpty(map.TopRightText))
@@ -192,7 +192,7 @@ public class ConversionController : MonoBehaviour
             mapController.topRightText.text = map.TopRightText;
             if (map.TopRightQuest > 0)
             {
-                mapController.TopRightTextOnClick.AddListener(() => this.gameController.PlayQuest(map.Location, map.TopRightQuest));
+                mapController.TopRightTextOnClick.AddListener(() => this.gameController.PlayQuest(map.TopRightQuest));
             }
         }
         if (!string.IsNullOrEmpty(map.BottomLeftText))
@@ -200,7 +200,7 @@ public class ConversionController : MonoBehaviour
             mapController.bottomLeftText.text = map.BottomLeftText;
             if (map.BottomLeftQuest > 0)
             {
-                mapController.BottomLeftTextOnClick.AddListener(() => this.gameController.PlayQuest(map.Location, map.BottomLeftQuest));
+                mapController.BottomLeftTextOnClick.AddListener(() => this.gameController.PlayQuest(map.BottomLeftQuest));
             }
         }
         if (!string.IsNullOrEmpty(map.BottomRightText))
@@ -208,7 +208,7 @@ public class ConversionController : MonoBehaviour
             mapController.bottomRightText.text = map.BottomRightText;
             if (map.BottomRightQuest > 0)
             {
-                mapController.BottomRightTextOnClick.AddListener(() => this.gameController.PlayQuest(map.Location, map.BottomRightQuest));
+                mapController.BottomRightTextOnClick.AddListener(() => this.gameController.PlayQuest(map.BottomRightQuest));
             }
         }
 

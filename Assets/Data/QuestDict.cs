@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-public class QuestDict : Dictionary<string, Quest>
+public class QuestDict : Dictionary<QuestId, Quest>
 {
     private static QuestDict instance = new QuestDict();
 
@@ -18,7 +18,7 @@ public class QuestDict : Dictionary<string, Quest>
         Quest quest = new Quest()
         {
             Location = Location.Tree,
-            Id = 1,
+            Id = QuestId.Start,
             Msg = new Message
             {
                 Content = "你醒了，脑后好疼。为什么那么黑呢？应该是夜里，怎么没有<color=yellow>月光</color>呢？\n得先找到<color=yellow>月亮</color>吧！\n你不知道怎么做。那打个？求助一下。",
@@ -31,7 +31,7 @@ public class QuestDict : Dictionary<string, Quest>
             },
             Answers = new List<string> { "月" },
             NextMessage = "月亮照亮了世界，你可以看清周围的一切。",
-            NextQuestId = 2
+            NextQuestId = QuestId.Name
         };
 
         this.Add(quest);
@@ -39,9 +39,9 @@ public class QuestDict : Dictionary<string, Quest>
         quest = new Quest()
         {
             Location = Location.Tree,
-            Id = 2,
+            Id = QuestId.Name,
             Msg = new Message { Content = "终于你想起了这个世界的力量。也想起来你的名字：" },
-            NextQuestId = 3
+            NextQuestId = QuestId.Map
         };
 
         this.Add(quest);
@@ -49,7 +49,7 @@ public class QuestDict : Dictionary<string, Quest>
         quest = new Quest()
         {
             Location = Location.Tree,
-            Id = 3,
+            Id = QuestId.Map,
             Msg = new Message { Content = "文友[##name##]，看来终于清醒了。下面看下周围的环境吧。打个#看看吧。" },
         };
 
@@ -58,11 +58,37 @@ public class QuestDict : Dictionary<string, Quest>
         quest = new Quest
         {
             Location = Location.Tree,
-            Id = 4,
-            Msg = new Message { Content = "那里有一群黑衣人，可能是你就是被他们打的。但是太远了，你看不清。" },
+            Id = QuestId.BlackMan,
+            Msg = new Message { Content = "那里有一群黑衣人，可能是你就是被他们打的。但是太远了，看不清。" },
             Hints = new List<Hint>
             {
                 new Hint{ Message="如果有<color=yellow>千里眼</color>的能力就好了。"}
+            },
+            NextMessage = "能看见了!黑衣人身上有<color=green>林府</color>的腰牌。怎么是他们？",
+            NextQuestId = QuestId.GoHome
+        };
+
+        this.Add(quest);
+
+        quest = new Quest
+        {
+            Location = Location.Tree,
+            Id = QuestId.GoHome,
+            Msg = new Message { Content = "天色很晚了，还是快点回家吧！玉环姐可能要等急了。" },
+            AutoNext = true,
+            NextQuestId = QuestId.MeetYuHuan
+        };
+
+        this.Add(quest);
+
+        quest = new Quest
+        {
+            Location = Location.Home,
+            Id = QuestId.MeetYuHuan,
+            Msg = new Message { Content = "到家了！有个小姑娘正在门口张望。看到她，一下子竟然无法形容。" },
+            Hints = new List<Hint>
+            {
+                new Hint {Message = "无暇的脸庞，朴素的麻衣，真的无法修饰。"}
             }
         };
 
@@ -71,12 +97,7 @@ public class QuestDict : Dictionary<string, Quest>
 
     public void Add(Quest quest)
     {
-        this.Add(quest.Key, quest);
-    }
-
-    public Quest Get(Location location, int id)
-    {
-        return this[location.ToString() + id.ToString()];
+        this.Add(quest.Id, quest);
     }
 
     public bool CheckQuest(Quest quest, string answer)

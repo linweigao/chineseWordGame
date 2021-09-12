@@ -1,4 +1,6 @@
-﻿public class PlayerState
+﻿using System.Collections.Generic;
+
+public class PlayerState
 {
     private static PlayerState instance = new PlayerState();
 
@@ -9,11 +11,13 @@
 
     private PlayerState()
     {
-
+        this.PassedQuests = new List<QuestId>();
     }
 
     public string Name { get; set; }
 
-    public string CurrentQuestId { get; set; }
+    public QuestId CurrentQuestId { get; set; }
+
+    public List<QuestId> PassedQuests { get; set; }
 }
 

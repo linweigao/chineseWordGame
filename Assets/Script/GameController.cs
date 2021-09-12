@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
     public Font font;
 
     private ConversionController conversionController;
+    private TransitionController transitionController;
     private PlayerState player;
     private QuestDict questDict;
     private MapDict mapDict;
@@ -15,6 +16,7 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         this.conversionController = this.GetComponent<ConversionController>();
+        this.transitionController = this.GetComponent<TransitionController>();
         Screen.orientation = ScreenOrientation.Portrait;
     }
 
@@ -32,14 +34,16 @@ public class GameController : MonoBehaviour
         // TODO: Load history
 
         // Load last/current quest
-        var quest = questDict[QuestDict.DefaultQuest];
-        if (!string.IsNullOrEmpty(player.CurrentQuestId))
+        var quest = questDict[QuestId.Start];
+        if (player.CurrentQuestId != QuestId.None)
         {
             quest = questDict[player.CurrentQuestId];
         }
 
         Canvas.ForceUpdateCanvases();
-        this.PlayQuest(Location.Tree, 4);
+
+
+        this.PlayQuest(QuestId.BlackMan);
     }
 
     // Update is called once per frame
@@ -48,9 +52,9 @@ public class GameController : MonoBehaviour
 
     }
 
-    public void PlayQuest(Location location, int id)
+    public void PlayQuest(QuestId id)
     {
-        Quest quest = this.questDict.Get(location, id);
+        Quest quest = this.questDict[id];
         StartCoroutine(PlayQuestAsync(quest));
     }
 
@@ -71,7 +75,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            if (currentQuest.Key == "Tree2")
+            if (currentQuest.Id == QuestId.Name)
             {
                 this.player.Name = input;
             }
@@ -82,10 +86,23 @@ public class GameController : MonoBehaviour
 
     private IEnumerator PlayQuestAsync(Quest quest)
     {
+        if (this.currentQuest == null || this.currentQuest.Location != quest.Location)
+        {
+            // transit location.
+            yield return this.transitionController.TriggerStart();
+        }
+
         this.currentQuest = quest;
-        this.player.CurrentQuestId = quest.Key;
+        this.player.CurrentQuestId = quest.Id;
 
         yield return this.conversionController.TypeMessage(currentQuest.Msg);
+
+        if (quest.AutoNext)
+        {
+            yield return new WaitForSeconds(0.5f);
+            var nextQuest = this.questDict[quest.NextQuestId];
+            yield return this.PlayQuestAsync(nextQuest);
+        }
     }
 
     private IEnumerator Hint()
@@ -131,8 +148,9 @@ public class GameController : MonoBehaviour
                 yield return this.conversionController.TypeMessage(new Message { Content = this.currentQuest.NextMessage });
             }
 
-            var location = this.currentQuest.NextQuestLocation == Location.None ? this.currentQuest.Location : this.currentQuest.NextQuestLocation;
-            var nextQuest = questDict[location.ToString() + this.currentQuest.NextQuestId.ToString()];
+            player.PassedQuests.Add(this.currentQuest.Id);
+
+            var nextQuest = questDict[this.currentQuest.NextQuestId];
             yield return PlayQuestAsync(nextQuest);
 
         }

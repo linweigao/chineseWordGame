@@ -1,11 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 
+public enum QuestId
+{
+    None=0,
+    Start,
+    Name,
+    Map,
+    BlackMan,
+    GoHome,
+    MeetYuHuan,
+}
+
 public class Quest
 {
     public Location Location { get; set; }
 
-    public int Id { get; set; }
+    public QuestId Id { get; set; }
 
     public Message Msg { get; set; }
 
@@ -13,11 +24,9 @@ public class Quest
 
     public List<Hint> Hints { get; set; }
 
-    public int NextQuestId { get; set; }
-
-    public Location NextQuestLocation { get; set; }
+    public QuestId NextQuestId { get; set; }
 
     public string NextMessage { get; set; }
 
-    public string Key { get { return Location.ToString() + Id.ToString(); } }
+    public bool AutoNext { get; set; }
 }
