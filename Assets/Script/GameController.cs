@@ -86,22 +86,31 @@ public class GameController : MonoBehaviour
 
     private IEnumerator PlayQuestAsync(Quest quest)
     {
-        if (this.currentQuest == null || this.currentQuest.Location != quest.Location)
+        bool meet = quest.PreQuestIds.TrueForAll(q => player.PassedQuests.Contains(q));
+        if (!meet)
         {
-            // transit location.
-            yield return this.transitionController.TriggerStart();
+            string noMeet = QuestDict.DefaultPreQuestNotMeet;
+            yield return this.conversionController.TypeMessage(new Message { Content = noMeet });
         }
-
-        this.currentQuest = quest;
-        this.player.CurrentQuestId = quest.Id;
-
-        yield return this.conversionController.TypeMessage(currentQuest.Msg);
-
-        if (quest.AutoNext)
+        else
         {
-            yield return new WaitForSeconds(0.5f);
-            var nextQuest = this.questDict[quest.NextQuestId];
-            yield return this.PlayQuestAsync(nextQuest);
+            if (this.currentQuest == null || this.currentQuest.Location != quest.Location)
+            {
+                // transit location.
+                yield return this.transitionController.TriggerStart();
+            }
+
+            this.currentQuest = quest;
+            this.player.CurrentQuestId = quest.Id;
+
+            yield return this.conversionController.TypeMessage(currentQuest.Msg);
+
+            if (quest.AutoNext)
+            {
+                yield return new WaitForSeconds(0.5f);
+                var nextQuest = this.questDict[quest.NextQuestId];
+                yield return this.PlayQuestAsync(nextQuest);
+            }
         }
     }
 

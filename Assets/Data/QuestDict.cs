@@ -12,6 +12,7 @@ public class QuestDict : Dictionary<QuestId, Quest>
     public const string DefaultQuest = "Tree1";
     public const string DefaultNoHint = "这里帮不了你，童鞋靠你自己了!";
     public const string DefaultWrongAnswer = "好像你的话没起什么作用!";
+    public const string DefaultPreQuestNotMeet = "是不是还有什么线索没有发现？";
 
     private QuestDict()
     {
@@ -75,7 +76,6 @@ public class QuestDict : Dictionary<QuestId, Quest>
             Location = Location.Tree,
             Id = QuestId.GoHome,
             Msg = new Message { Content = "天色很晚了，还是快点回家吧！玉环姐可能要等急了。" },
-            AutoNext = true,
             NextQuestId = QuestId.MeetYuHuan
         };
 
@@ -89,6 +89,10 @@ public class QuestDict : Dictionary<QuestId, Quest>
             Hints = new List<Hint>
             {
                 new Hint {Message = "无暇的脸庞，朴素的麻衣，真的无法修饰。"}
+            },
+            PreQuestIds =
+            {
+                QuestId.BlackMan
             }
         };
 

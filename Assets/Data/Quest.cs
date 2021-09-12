@@ -14,6 +14,11 @@ public enum QuestId
 
 public class Quest
 {
+    public Quest()
+    {
+        this.PreQuestIds = new List<QuestId>();
+    }
+
     public Location Location { get; set; }
 
     public QuestId Id { get; set; }
@@ -23,6 +28,10 @@ public class Quest
     public List<string> Answers { get; set; }
 
     public List<Hint> Hints { get; set; }
+
+    public List<QuestId> PreQuestIds { get; set; }
+
+    public string PreQuestNotMeet { get; set; }
 
     public QuestId NextQuestId { get; set; }
 

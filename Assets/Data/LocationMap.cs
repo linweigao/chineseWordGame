@@ -34,7 +34,9 @@ public class MapDict: Dictionary<Location, LocationMap>
             TopLeftText = "<color=yellow>山山山山\n 山山 山</color>",
             BottomLeftText = "<color=green>林 林 林 林\n 林</color> 我 <color=green>林\n 林 林 林</color>",
             TopRightText = "<color=black>黑衣人</color>",
-            TopRightQuest = QuestId.BlackMan
+            TopRightQuest = QuestId.BlackMan,
+            BottomRightText = "家",
+            BottomRightQuest = QuestId.MeetYuHuan
         };
 
         this.Add(map.Location, map);
