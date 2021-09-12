@@ -26,7 +26,7 @@ public class QuestDict : Dictionary<string, Quest>
             },
             Hints = new List<Hint>
             {
-                new Hint { Type = HintType.Message, Message = "文字！优美文字就是这个世界的力量！\n月光的文字。让文字的声音让这个世界听见：" },
+                new Hint { Type = HintType.Message, Message = "文字！优美文字就是这个世界的力量！\n月光的文字。那就试试看“<color=yellow>床前明月光</color>”吧！" },
                 new Hint { Type = HintType.Response, Message = "床前明月光" }
             },
             Answers = new List<string> { "月" },
@@ -62,7 +62,7 @@ public class QuestDict : Dictionary<string, Quest>
             Msg = new Message { Content = "那里有一群黑衣人，可能是你就是被他们打的。但是太远了，你看不清。" },
             Hints = new List<Hint>
             {
-                new Hint{Type=HintType.Message, Message="看不清楚需要加强你的<color=yellow>眼睛</color>的能力。"}
+                new Hint{ Message="如果有<color=yellow>千里眼</color>的能力就好了。"}
             }
         };
 
