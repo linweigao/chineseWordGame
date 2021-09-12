@@ -31,9 +31,9 @@ public class MapDict: Dictionary<Location, LocationMap>
         {
             Location = Location.Tree,
             MiddleText = "路",
-            TopLeftText = "山山山山\n 山山 山",
-            BottomLeftText = "林 林 林 林\n 林 林\n 林林林",
-            TopRightText = "黑衣人",
+            TopLeftText = "<color=yellow>山山山山\n 山山 山</color>",
+            BottomLeftText = "<color=green>林 林 林 林\n 林</color> 我 <color=green>林\n 林 林 林</color>",
+            TopRightText = "<color=black>黑衣人</color>",
             TopRightQuest = 4
         };
 

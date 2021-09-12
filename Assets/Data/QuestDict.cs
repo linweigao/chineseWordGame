@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-public class QuestDict: Dictionary<string, Quest>
+public class QuestDict : Dictionary<string, Quest>
 {
     private static QuestDict instance = new QuestDict();
 
@@ -11,6 +11,7 @@ public class QuestDict: Dictionary<string, Quest>
 
     public const string DefaultQuest = "Tree1";
     public const string DefaultNoHint = "这里帮不了你，童鞋靠你自己了!";
+    public const string DefaultWrongAnswer = "好像你的话没起什么作用!";
 
     private QuestDict()
     {
@@ -29,7 +30,7 @@ public class QuestDict: Dictionary<string, Quest>
                 new Hint { Type = HintType.Response, Message = "床前明月光" }
             },
             Answers = new List<string> { "月" },
-            NextMessage = "月亮照亮了你的世界。",
+            NextMessage = "月亮照亮了世界，你可以看清周围的一切。",
             NextQuestId = 2
         };
 
@@ -58,7 +59,11 @@ public class QuestDict: Dictionary<string, Quest>
         {
             Location = Location.Tree,
             Id = 4,
-            Msg = new Message { Content = "那里有一群黑衣人，" }
+            Msg = new Message { Content = "那里有一群黑衣人，可能是你就是被他们打的。但是太远了，你看不清。" },
+            Hints = new List<Hint>
+            {
+                new Hint{Type=HintType.Message, Message="看不清楚需要加强你的<color=yellow>眼睛</color>的能力。"}
+            }
         };
 
         this.Add(quest);
@@ -67,6 +72,11 @@ public class QuestDict: Dictionary<string, Quest>
     public void Add(Quest quest)
     {
         this.Add(quest.Key, quest);
+    }
+
+    public Quest Get(Location location, int id)
+    {
+        return this[location.ToString() + id.ToString()];
     }
 
     public bool CheckQuest(Quest quest, string answer)

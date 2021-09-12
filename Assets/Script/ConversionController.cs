@@ -14,12 +14,14 @@ public class ConversionController : MonoBehaviour
 
     private bool isWorking;
     private PlayerState player;
+    private GameController gameController;
     private ScrollRect scrollRect;
     private RectTransform contentRect;
 
     void Awake()
     {
         player = PlayerState.Instance;
+        this.gameController = this.GetComponent<GameController>();
 
         this.scrollRect = this.scrollView.GetComponent<ScrollRect>();
         this.contentRect = this.content.GetComponent<RectTransform>();
@@ -172,27 +174,42 @@ public class ConversionController : MonoBehaviour
         if (!string.IsNullOrEmpty(map.MiddleText))
         {
             mapController.middleText.text = map.MiddleText;
-            
+            if (map.MiddleQuest > 0)
+            {
+                mapController.MiddleTextOnClick.AddListener(() => this.gameController.PlayQuest(map.Location, map.MiddleQuest));
+            }
         }
         if (!string.IsNullOrEmpty(map.TopLeftText))
         {
             mapController.topLeftText.text = map.TopLeftText;
-
+            if (map.TopLeftQuest > 0)
+            {
+                mapController.TopLeftTextOnClick.AddListener(() => this.gameController.PlayQuest(map.Location, map.TopLeftQuest));
+            }
         }
         if (!string.IsNullOrEmpty(map.TopRightText))
         {
             mapController.topRightText.text = map.TopRightText;
-
+            if (map.TopRightQuest > 0)
+            {
+                mapController.TopRightTextOnClick.AddListener(() => this.gameController.PlayQuest(map.Location, map.TopRightQuest));
+            }
         }
         if (!string.IsNullOrEmpty(map.BottomLeftText))
         {
             mapController.bottomLeftText.text = map.BottomLeftText;
-
+            if (map.BottomLeftQuest > 0)
+            {
+                mapController.BottomLeftTextOnClick.AddListener(() => this.gameController.PlayQuest(map.Location, map.BottomLeftQuest));
+            }
         }
         if (!string.IsNullOrEmpty(map.BottomRightText))
         {
             mapController.bottomRightText.text = map.BottomRightText;
-
+            if (map.BottomRightQuest > 0)
+            {
+                mapController.BottomRightTextOnClick.AddListener(() => this.gameController.PlayQuest(map.Location, map.BottomRightQuest));
+            }
         }
 
         return mapController;

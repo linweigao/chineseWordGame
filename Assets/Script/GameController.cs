@@ -37,16 +37,26 @@ public class GameController : MonoBehaviour
         {
             quest = questDict[player.CurrentQuestId];
         }
-        this.currentQuest = quest;
 
         Canvas.ForceUpdateCanvases();
-        StartCoroutine(PlayQuest(quest));
+        this.PlayQuest(Location.Tree, 4);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public void PlayQuest(Location location, int id)
+    {
+        Quest quest = this.questDict.Get(location, id);
+        StartCoroutine(PlayQuestAsync(quest));
+    }
+
+    public void PlayQuest(Quest quest)
+    {
+        StartCoroutine(PlayQuestAsync(quest));
     }
 
     public void HandleInput(string input)
@@ -70,7 +80,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private IEnumerator PlayQuest(Quest quest)
+    private IEnumerator PlayQuestAsync(Quest quest)
     {
         this.currentQuest = quest;
         this.player.CurrentQuestId = quest.Key;
@@ -123,13 +133,13 @@ public class GameController : MonoBehaviour
 
             var location = this.currentQuest.NextQuestLocation == Location.None ? this.currentQuest.Location : this.currentQuest.NextQuestLocation;
             var nextQuest = questDict[location.ToString() + this.currentQuest.NextQuestId.ToString()];
-            yield return PlayQuest(nextQuest);
+            yield return PlayQuestAsync(nextQuest);
 
         }
         else
         {
             yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
-            yield return this.conversionController.TypeMessage(new Message { Content = "好像你的话没起什么作用!", Type = MessageType.SystemMessage });
+            yield return this.conversionController.TypeMessage(new Message { Content = QuestDict.DefaultWrongAnswer, Type = MessageType.SystemMessage });
         }
     }
 }
