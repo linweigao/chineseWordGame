@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour
         Canvas.ForceUpdateCanvases();
 
 
-        this.PlayQuest(QuestId.BlackMan);
+        this.PlayQuest(QuestId.TalkYuHuan);
     }
 
     // Update is called once per frame
