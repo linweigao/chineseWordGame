@@ -93,7 +93,17 @@ public class QuestDict : Dictionary<QuestId, Quest>
             PreQuestIds =
             {
                 QuestId.BlackMan
-            }
+            },
+            NextQuestId = QuestId.TalkYuHuan
+        };
+
+        this.Add(quest);
+
+        quest = new Quest
+        {
+            Location = Location.Home,
+            Id = QuestId.TalkYuHuan,
+            Msg = new Message { Content = "##name##，你怎么才回来啊？啊！受伤了，快让我看看。疼不疼啊？", From= NPC.YuHuan, Type= MessageType.NPCMessage }
         };
 
         this.Add(quest);

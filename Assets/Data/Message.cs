@@ -2,7 +2,7 @@
 {
     SystemMessage,
     SelfMessage,
-    UserMessage
+    NPCMessage
 }
 
 
@@ -12,5 +12,5 @@ public class Message
 
     public string Content { get; set; }
 
-    public string From { get; set; }
+    public NPC From { get; set; }
 }

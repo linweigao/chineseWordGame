@@ -10,6 +10,7 @@ public enum QuestId
     BlackMan,
     GoHome,
     MeetYuHuan,
+    TalkYuHuan,
 }
 
 public class Quest

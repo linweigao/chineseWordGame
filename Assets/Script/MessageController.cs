@@ -62,13 +62,17 @@ public class MessageController : MonoBehaviour
             textGo.color = selfTextColor;
             containerGo.color = selfBgColor;
             imageRect.localPosition = new Vector3(width - marginRight - imageRect.sizeDelta.x, imageRect.localPosition.y);
-            textExpectWidth = actualWidth - imageRect.sizeDelta.x - marginImage;
+            textExpectWidth = actualWidth - imageRect.sizeDelta.x * 2 - marginImage;
         }
-        else if (message.Type == MessageType.UserMessage)
+        else if (message.Type == MessageType.NPCMessage)
         {
+            var npcSprite = Resources.Load<Sprite>(NPCDict.Instance[message.From]);
+            imageGo.GetComponent<Image>().sprite = npcSprite;
             textGo.color = userTextColor;
             containerGo.color = userBgColor;
-            textExpectWidth = actualWidth - imageRect.sizeDelta.x - marginImage;
+            // Magic number -50
+            imageRect.localPosition = new Vector3(marginLeft + imageRect.sizeDelta.x / 2 - 50, imageRect.localPosition.y);
+            textExpectWidth = actualWidth - imageRect.sizeDelta.x * 2 - marginImage;
         }
 
         var textMarginLeft = textRect.offsetMin.x;
@@ -86,6 +90,10 @@ public class MessageController : MonoBehaviour
         else if (message.Type == MessageType.SelfMessage)
         {
             textContainerRect.localPosition = new Vector3(imageRect.localPosition.x - marginImage - textContainerRect.sizeDelta.x / 2f - 50, imageRect.localPosition.y);
+        }
+        else if (message.Type == MessageType.NPCMessage)
+        {
+            textContainerRect.localPosition = new Vector3(imageRect.localPosition.x + imageRect.sizeDelta.x / 2f + marginImage + textContainerRect.sizeDelta.x / 2f, textRect.localPosition.y);
         }
 
         containerRect.sizeDelta = new Vector2(width, Math.Max(textContainerRect.sizeDelta.y, imageRect.sizeDelta.y) + marginBottom);
