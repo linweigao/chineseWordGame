@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour
         Canvas.ForceUpdateCanvases();
 
 
-        this.PlayQuest(QuestId.TalkYuHuan);
+        this.PlayQuest(QuestId.Start);
     }
 
     // Update is called once per frame
@@ -148,7 +148,7 @@ public class GameController : MonoBehaviour
 
     private IEnumerator Reponse(string input)
     {
-        if (questDict.CheckQuest(this.currentQuest, input))
+        if (this.CheckQuest(this.currentQuest, input))
         {
             yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage }, 0.5f);
 
@@ -168,5 +168,16 @@ public class GameController : MonoBehaviour
             yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
             yield return this.conversionController.TypeMessage(new Message { Content = QuestDict.DefaultWrongAnswer, Type = MessageType.SystemMessage });
         }
+    }
+
+    private bool CheckQuest(Quest quest, string input)
+    {
+        PoemMatch match = PoemList.Instance.Match(input);
+        if (match == null)
+        {
+            return false;
+        }
+
+        return quest.Answers.TrueForAll(a => match.Sentences.Find(m => m.Tags.Contains(a)) != null);
     }
 }
