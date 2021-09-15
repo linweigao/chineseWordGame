@@ -30,7 +30,7 @@ public class QuestDict : Dictionary<QuestId, Quest>
                 new Hint { Type = HintType.Message, Message = "文字！优美文字就是这个世界的力量！\n月光的文字。那就试试看“<color=yellow>床前明月光</color>”吧！" },
                 new Hint { Type = HintType.Response, Message = "床前明月光" }
             },
-            Answers = new List<string> { "月" },
+            Answers = new List<Tag> { Tag.月 },
             NextMessage = "月亮照亮了世界，你可以看清周围的一切。",
             NextQuestId = QuestId.Name
         };
@@ -61,6 +61,7 @@ public class QuestDict : Dictionary<QuestId, Quest>
             Location = Location.Tree,
             Id = QuestId.BlackMan,
             Msg = new Message { Content = "那里有一群黑衣人，可能是你就是被他们打的。但是太远了，看不清。" },
+            Answers = new List<Tag> { Tag.目 },
             Hints = new List<Hint>
             {
                 new Hint{ Message="如果有<color=yellow>千里眼</color>的能力就好了。"}
@@ -112,11 +113,6 @@ public class QuestDict : Dictionary<QuestId, Quest>
     public void Add(Quest quest)
     {
         this.Add(quest.Id, quest);
-    }
-
-    public bool CheckQuest(Quest quest, string answer)
-    {
-        return true;
     }
 }
 

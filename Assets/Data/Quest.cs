@@ -26,7 +26,7 @@ public class Quest
 
     public Message Msg { get; set; }
 
-    public List<string> Answers { get; set; }
+    public List<Tag> Answers { get; set; }
 
     public List<Hint> Hints { get; set; }
 
