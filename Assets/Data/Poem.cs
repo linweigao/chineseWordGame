@@ -103,7 +103,7 @@ public static class PoemExtensions
             }
         }
 
-        return (match * 100 / count >= 80);
+        return (match * 100 / count >= 70);
     }
 
     public static PoemMatch Match(this Poem poem, string input)

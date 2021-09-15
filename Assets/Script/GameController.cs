@@ -42,8 +42,7 @@ public class GameController : MonoBehaviour
 
         Canvas.ForceUpdateCanvases();
 
-
-        this.PlayQuest(QuestId.Start);
+        this.PlayQuest(quest);
     }
 
     // Update is called once per frame
@@ -75,11 +74,6 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            if (currentQuest.Id == QuestId.Name)
-            {
-                this.player.Name = input;
-            }
-
             StartCoroutine(this.Reponse(input));
         }
     }
@@ -102,6 +96,7 @@ public class GameController : MonoBehaviour
 
             this.currentQuest = quest;
             this.player.CurrentQuestId = quest.Id;
+            this.player.Save();
 
             yield return this.conversionController.TypeMessage(currentQuest.Msg);
 
@@ -148,30 +143,36 @@ public class GameController : MonoBehaviour
 
     private IEnumerator Reponse(string input)
     {
-        if (this.CheckQuest(this.currentQuest, input))
-        {
-            yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage }, 0.5f);
-
-            if (!string.IsNullOrEmpty(this.currentQuest.NextMessage))
+            if (this.CheckQuest(this.currentQuest, input))
             {
-                yield return this.conversionController.TypeMessage(new Message { Content = this.currentQuest.NextMessage });
+                yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
+
+                if (!string.IsNullOrEmpty(this.currentQuest.NextMessage))
+                {
+                    yield return this.conversionController.TypeMessage(new Message { Content = this.currentQuest.NextMessage });
+                }
+
+                player.PassedQuests.Add(this.currentQuest.Id);
+
+                var nextQuest = questDict[this.currentQuest.NextQuestId];
+                yield return PlayQuestAsync(nextQuest);
+
             }
-
-            player.PassedQuests.Add(this.currentQuest.Id);
-
-            var nextQuest = questDict[this.currentQuest.NextQuestId];
-            yield return PlayQuestAsync(nextQuest);
-
-        }
-        else
-        {
-            yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
-            yield return this.conversionController.TypeMessage(new Message { Content = QuestDict.DefaultWrongAnswer, Type = MessageType.SystemMessage });
-        }
+            else
+            {
+                yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
+                yield return this.conversionController.TypeMessage(new Message { Content = QuestDict.DefaultWrongAnswer, Type = MessageType.SystemMessage });
+            }
     }
 
     private bool CheckQuest(Quest quest, string input)
     {
+        if (currentQuest.Id == QuestId.Name)
+        {
+            this.player.Name = input;
+            return true;
+        }
+
         PoemMatch match = PoemList.Instance.Match(input);
         if (match == null)
         {
