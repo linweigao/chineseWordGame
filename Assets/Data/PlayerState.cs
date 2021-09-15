@@ -13,23 +13,20 @@ public class PlayerState
     {
         get
         {
-            if (instance == null)
-            {
-                lock (obj)
-                {
-                    instance = SaveLoadUtil.LoadData<PlayerState>(PlayerStatePath);
-                    if (instance == null)
-                    {
-                        instance = new PlayerState();
-                    }
-                }
-            }
-
             return instance;
+        }
+        set
+        {
+            instance = value;
         }
     }
 
-    private PlayerState()
+    public static PlayerState Load()
+    {
+        return SaveLoadUtil.LoadData<PlayerState>(PlayerStatePath);
+    }
+
+    public PlayerState()
     {
         this.PassedQuests = new List<QuestId>();
     }

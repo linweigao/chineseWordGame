@@ -15,6 +15,7 @@ public class TextEventHandler : MonoBehaviour, IPointerClickHandler, IPointerDow
 
     // add callbacks in the inspector like for buttons
     public UnityEvent onClick;
+    public UnityEvent onHover;
 
     #endregion Inspector
 
@@ -97,6 +98,7 @@ public class TextEventHandler : MonoBehaviour, IPointerClickHandler, IPointerDow
     {
         isHover = true;
         UpdateColor();
+        this.onHover.Invoke();
     }
 
     public void OnPointerExit(PointerEventData eventData)
