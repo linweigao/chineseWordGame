@@ -6,7 +6,10 @@ public enum Tag
     月,
     目,
     冰,
-    家
+    家,
+    山,
+    河,
+    楼
 }
 
 public class Sentence
@@ -59,6 +62,21 @@ public class PoemList : List<Poem>
                 new Sentence { Content="疑是地上霜。", Tags = {Tag.冰}},
                 new Sentence{Content="举头望明月，", Tags = {Tag.月 } },
                 new Sentence{Content="低头思故乡。", Tags = {Tag.家}}
+            }
+        };
+
+        this.Add(poem);
+
+        poem = new Poem
+        {
+            Title = "登鹳雀楼",
+            Author = "王之涣",
+            Sentences =
+            {
+                new Sentence {Content="白日依山尽，", Tags= {Tag.山}},
+                new Sentence {Content="黄河入海流。 ", Tags= {Tag.河}},
+                new Sentence {Content="欲穷千里目，", Tags= {Tag.目}},
+                new Sentence {Content="更上一层楼。", Tags= {Tag.楼}},
             }
         };
 

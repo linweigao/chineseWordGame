@@ -88,10 +88,10 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            if (this.currentQuest == null || this.currentQuest.Location != quest.Location)
+            if (this.currentQuest != null && this.currentQuest.Location != quest.Location)
             {
                 // transit location.
-                yield return this.transitionController.TriggerStart();
+                yield return this.conversionController.AddLocationMessage(this.currentQuest.Location.ToString(), quest.Location.ToString());
             }
 
             this.currentQuest = quest;
@@ -143,26 +143,27 @@ public class GameController : MonoBehaviour
 
     private IEnumerator Reponse(string input)
     {
-            if (this.CheckQuest(this.currentQuest, input))
+        if (this.CheckQuest(this.currentQuest, input))
+        {
+            yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
+
+            if (!string.IsNullOrEmpty(this.currentQuest.NextMessage))
             {
-                yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
-
-                if (!string.IsNullOrEmpty(this.currentQuest.NextMessage))
-                {
-                    yield return this.conversionController.TypeMessage(new Message { Content = this.currentQuest.NextMessage });
-                }
-
-                player.PassedQuests.Add(this.currentQuest.Id);
-
-                var nextQuest = questDict[this.currentQuest.NextQuestId];
-                yield return PlayQuestAsync(nextQuest);
-
+                yield return this.conversionController.TypeMessage(new Message { Content = this.currentQuest.NextMessage });
             }
-            else
-            {
-                yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
-                yield return this.conversionController.TypeMessage(new Message { Content = QuestDict.DefaultWrongAnswer, Type = MessageType.SystemMessage });
-            }
+
+            player.PassedQuests.Add(this.currentQuest.Id);
+
+            var nextQuest = questDict[this.currentQuest.NextQuestId];
+
+            yield return PlayQuestAsync(nextQuest);
+
+        }
+        else
+        {
+            yield return this.conversionController.TypeMessage(new Message { Content = input, Type = MessageType.SelfMessage });
+            yield return this.conversionController.TypeMessage(new Message { Content = QuestDict.DefaultWrongAnswer, Type = MessageType.SystemMessage });
+        }
     }
 
     private bool CheckQuest(Quest quest, string input)

@@ -18,7 +18,7 @@ public class QuestDict : Dictionary<QuestId, Quest>
     {
         Quest quest = new Quest()
         {
-            Location = Location.Tree,
+            Location = Location.村后树林,
             Id = QuestId.Start,
             Msg = new Message
             {
@@ -39,7 +39,7 @@ public class QuestDict : Dictionary<QuestId, Quest>
 
         quest = new Quest()
         {
-            Location = Location.Tree,
+            Location = Location.村后树林,
             Id = QuestId.Name,
             Msg = new Message { Content = "终于你想起了这个世界的力量。也想起来你的名字：" },
             NextQuestId = QuestId.Map
@@ -49,7 +49,7 @@ public class QuestDict : Dictionary<QuestId, Quest>
 
         quest = new Quest()
         {
-            Location = Location.Tree,
+            Location = Location.村后树林,
             Id = QuestId.Map,
             Msg = new Message { Content = "文友[##name##]，看来终于清醒了。下面看下周围的环境吧。打个#看看吧。" },
         };
@@ -58,7 +58,7 @@ public class QuestDict : Dictionary<QuestId, Quest>
 
         quest = new Quest
         {
-            Location = Location.Tree,
+            Location = Location.村后树林,
             Id = QuestId.BlackMan,
             Msg = new Message { Content = "那里有一群黑衣人，可能是你就是被他们打的。但是太远了，看不清。" },
             Answers = new List<Tag> { Tag.目 },
@@ -74,7 +74,7 @@ public class QuestDict : Dictionary<QuestId, Quest>
 
         quest = new Quest
         {
-            Location = Location.Tree,
+            Location = Location.村后树林,
             Id = QuestId.GoHome,
             Msg = new Message { Content = "天色很晚了，还是快点回家吧！玉环姐可能要等急了。" },
             NextQuestId = QuestId.MeetYuHuan
@@ -84,7 +84,7 @@ public class QuestDict : Dictionary<QuestId, Quest>
 
         quest = new Quest
         {
-            Location = Location.Home,
+            Location = Location.家,
             Id = QuestId.MeetYuHuan,
             Msg = new Message { Content = "到家了！有个小姑娘正在门口张望。看到她，一下子竟然无法形容。" },
             Hints = new List<Hint>
@@ -102,7 +102,7 @@ public class QuestDict : Dictionary<QuestId, Quest>
 
         quest = new Quest
         {
-            Location = Location.Home,
+            Location = Location.家,
             Id = QuestId.TalkYuHuan,
             Msg = new Message { Content = "##name##，你怎么才回来啊？啊！受伤了，快让我看看。疼不疼啊？", From= NPC.YuHuan, Type= MessageType.NPCMessage }
         };

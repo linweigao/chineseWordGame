@@ -11,6 +11,7 @@ public class ConversionController : MonoBehaviour
     public GameObject content;
     public GameObject messagePrefab;
     public GameObject mapPrefab;
+    public GameObject locationPrefab;
 
     private bool isWorking;
     private PlayerState player;
@@ -89,6 +90,23 @@ public class ConversionController : MonoBehaviour
 
 
         yield return new WaitForSecondsRealtime(0.5f);
+        isWorking = false;
+    }
+
+    public IEnumerator AddLocationMessage(string from, string to)
+    {
+        if (this.isWorking)
+        {
+            yield return new WaitWhile(() => this.isWorking);
+        }
+
+        isWorking = true;
+
+        this.CreateLocationController(from, "到" + to);
+        yield return new WaitForEndOfFrame();
+        this.ScrollToBottom();
+        yield return new WaitForSeconds(1f);
+
         isWorking = false;
     }
 
@@ -213,5 +231,17 @@ public class ConversionController : MonoBehaviour
         }
 
         return mapController;
+    }
+
+    private LocationController CreateLocationController(string from, string to)
+    {
+        var childCount = content.transform.childCount;
+        var locationGo = Instantiate(locationPrefab, content.transform);
+        var locationController = locationGo.GetComponent<LocationController>();
+        locationGo.transform.SetSiblingIndex(childCount - 1);
+
+        locationController.fromText.text = from;
+        locationController.toText.text = to;
+        return locationController;
     }
 }

@@ -1,6 +1,6 @@
 ﻿public enum Location
 {
     None,
-    Tree,
-    Home
+    村后树林,
+    家
 }

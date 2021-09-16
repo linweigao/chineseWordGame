@@ -6,8 +6,7 @@ public class PlayerState
 {
     public const string PlayerStatePath = "play.dat";
 
-    private static object obj = new object();
-    private static PlayerState instance;
+    private static PlayerState instance = new PlayerState();
 
     public static PlayerState Instance
     {

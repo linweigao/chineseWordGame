@@ -29,7 +29,7 @@ public class MapDict: Dictionary<Location, LocationMap>
     {
         LocationMap map = new LocationMap
         {
-            Location = Location.Tree,
+            Location = Location.村后树林,
             MiddleText = "路",
             TopLeftText = "<color=yellow>山山山山\n 山山 山</color>",
             BottomLeftText = "<color=green>林 林 林 林\n 林</color> 我 <color=green>林\n 林 林 林</color>",
