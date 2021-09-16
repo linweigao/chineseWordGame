@@ -757,7 +757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebbbf1da7a15b4cd5ae844c5637ee6fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  font: {fileID: 12800000, guid: c7b00861b70bd4a0b850d6fe3961af83, type: 3}
+  locationText: {fileID: 0}
 --- !u!4 &617032341
 Transform:
   m_ObjectHideFlags: 0
@@ -1381,7 +1381,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u4E54\u5BB6\u6751\u540E\u7684\u6811\u6797"
+  m_text: "\u6751\u540E\u6811\u6797"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a661abe048cb04ef19336b8120e427e7, type: 2}
   m_sharedMaterial: {fileID: 3355424706838660620, guid: a661abe048cb04ef19336b8120e427e7, type: 2}

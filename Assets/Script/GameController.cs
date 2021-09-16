@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    public Font font;
+    public TMP_Text locationText;
 
     private ConversionController conversionController;
     private TransitionController transitionController;
@@ -95,6 +96,7 @@ public class GameController : MonoBehaviour
             }
 
             this.currentQuest = quest;
+            this.locationText.text = quest.Location.ToString();
             this.player.CurrentQuestId = quest.Id;
             this.player.Save();
 
